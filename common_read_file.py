@@ -25,13 +25,15 @@ class CommonReadFile(object):
         print(lit)
         return lit
 
-
     def get_data_json(self, file_json):
         with open(file_json, encoding="utf-8") as f:
             lit = []
             keys = json.load(f)
             for key in keys:
-                 lit.append(tuple(key.values()))
+                if len(key.values()) == 1:
+                    lit.extend(key.values())
+                else:
+                    lit.append(tuple(key.values()))
             return lit
 
     def get_data_yaml(self, file_name):
