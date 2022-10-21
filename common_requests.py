@@ -59,6 +59,3 @@ class CommonHttp(object):
         print("all_headers=%s" % all_headers)
         return all_headers
 
-if __name__ == '__main__':
-    CommonHttp("http://wx.qq.com").get("/aa")
-    CommonHttp("http://wx.qq.com").post("/aa")
