@@ -2,12 +2,17 @@ import xlrd
 import json
 import csv
 import yaml
+from common import common_func
 
 
 class CommonReadFile(object):
 
-    def get_data_excel(self, filename, sheet):
-        wb = xlrd.open_workbook(filename)
+    def __init__(self, base_path=None):
+        self.base_path = base_path
+
+    def get_data_excel(self, file_name, sheet):
+        file_name = self.__build_filename(file_name)
+        wb = xlrd.open_workbook(file_name)
         # wb.sheet_by_index(0) 通过索引获得工作薄
         sheet = wb.sheet_by_index(sheet)
         rows = sheet.nrows  # 获取总行数
@@ -26,7 +31,8 @@ class CommonReadFile(object):
         return lit
 
     def get_data_json(self, file_json):
-        with open(file_json, encoding="utf-8") as f:
+        file_name = self.__build_filename(file_json)
+        with open(file_name, encoding="utf-8") as f:
             lit = []
             keys = json.load(f)
             for key in keys:
@@ -37,6 +43,7 @@ class CommonReadFile(object):
             return lit
 
     def get_data_yaml(self, file_name):
+        file_name = self.__build_filename(file_name)
         data = []
         with open(file_name, encoding="utf-8") as f:
             dict_data = yaml.safe_load(f.read())
@@ -45,8 +52,9 @@ class CommonReadFile(object):
         return data
 
     def get_data_csv(self, file_csv):
+        file_name = self.__build_filename(file_csv)
         # with opn 打开某文件 定义别名 f
-        with open(file_csv, encoding="utf-8") as f:
+        with open(file_name, encoding="utf-8") as f:
             # 读取里面值
             lst = csv.reader(f)
             my_data = []
@@ -56,3 +64,11 @@ class CommonReadFile(object):
                 else:
                     my_data.append(row)
             return my_data
+
+    def __build_filename(self, filename):
+        if self.base_path and common_func.get_env():
+            return "%s/data_%s/%s" % (self.base_path, common_func.get_env(), filename)
+        elif self.base_path and not common_func.get_env():
+            return "%s/%s" % (self.base_path, filename)
+
+        return filename

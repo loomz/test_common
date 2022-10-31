@@ -21,4 +21,6 @@ def get_env():
         elif opt in ("-e", "--env"):
             current_env = arg
 
+    assert current_env, "环境变量使用命令行参数 -e 或者 --env, 可选项为[test, pre, prd]，比如 python main.py --env test"
+
     return current_env
