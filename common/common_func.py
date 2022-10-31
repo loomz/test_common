@@ -16,7 +16,7 @@ def get_env():
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             print('main.py -e <env>')
-            print('or: test_arg.py --env=<env>')
+            print('or: tmain.py --env=<env>')
             sys.exit()
         elif opt in ("-e", "--env"):
             current_env = arg
